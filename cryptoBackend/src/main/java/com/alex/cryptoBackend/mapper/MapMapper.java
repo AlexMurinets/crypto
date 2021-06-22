@@ -18,6 +18,8 @@ public interface MapMapper {
     Currency toCurrency(CurrencyDto currencyDto);
     CurrencyDto toDto(Currency currency);
     List<CurrencyDto> toCurrencyListDto(List<Currency> currencies);
+    Wallet toWallet(WalletDto walletDto);
+    List<WalletDto> toWalletListDto(List<Wallet> wallets);
     WalletDto toDto(Wallet wallet);
     UserDto toDto(User user);
     List<UserDto> toDto(List<User> users);
