@@ -3,10 +3,11 @@ package com.alex.cryptoBackend.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Table(name = "users")
 public class User {
@@ -14,6 +15,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
+    private String username;
     private String lastName;
     private String password;
     private String email;
@@ -22,31 +24,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserState state;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setStatus(UserStatus status) {
-        this.status = status;
-    }
-
-    public void setState(UserState state) {
-        this.state = state;
-    }
 }
