@@ -5,10 +5,8 @@ import com.alex.cryptoBackend.repository.CurrencyRepository;
 import com.alex.cryptoBackend.repository.RoleRepository;
 import com.alex.cryptoBackend.repository.UserRepository;
 import com.alex.cryptoBackend.repository.WalletRepository;
-import com.alex.cryptoBackend.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +26,12 @@ public class Bootstrap implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         Role userRole = new Role();
-        userRole.setName(ERole.USER);
+        userRole.setName(ERole.ROLE_USER);
         roleRepository.save(userRole);
 
         Role adminRole = new Role();
-        adminRole.setName(ERole.ADMIN);
+        adminRole.setName(ERole.ROLE_ADMIN);
         roleRepository.save(adminRole);
-
 
         User user = new User();
         user.setFirstName("Alexei");
@@ -53,7 +50,7 @@ public class Bootstrap implements CommandLineRunner {
         user1.setLastName("Morgenshtern");
         user1.setUsername("clown");
         user1.setEmail("Alisher@gmail.com");
-        user1.setPassword("popins666");
+        user1.setPassword(encoder.encode("popins666"));
         user1.getRoles().add(userRole);
         user1.setState(UserState.ACTIVE);
         user1.setStatus(UserStatus.BASIC);

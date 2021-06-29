@@ -1,6 +1,5 @@
 package com.alex.cryptoBackend.dto;
 
-import com.alex.cryptoBackend.model.Role;
 import com.alex.cryptoBackend.model.UserState;
 import com.alex.cryptoBackend.model.UserStatus;
 import lombok.Data;

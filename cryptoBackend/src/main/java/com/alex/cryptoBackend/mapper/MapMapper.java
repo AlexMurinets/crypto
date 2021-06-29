@@ -5,7 +5,6 @@ import com.alex.cryptoBackend.model.*;
 import com.alex.cryptoBackend.security.service.UserDetailsImpl;
 import org.mapstruct.Mapper;
 
-
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -24,4 +23,6 @@ public interface MapMapper {
     UserDto toDto(User user);
     List<UserDto> toDto(List<User> users);
     TransactionDto toDto(Transaction transaction);
+    Transaction toTransaction(TransactionDto transactionDto);
+    List<TransactionDto> toTransactionDtoList(List<Transaction> transactions);
 }

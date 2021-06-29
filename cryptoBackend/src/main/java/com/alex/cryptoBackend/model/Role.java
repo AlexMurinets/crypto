@@ -3,6 +3,7 @@ package com.alex.cryptoBackend.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -12,6 +13,6 @@ public class Role {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @NotNull
     private ERole name;
 }
