@@ -1,18 +1,17 @@
 package com.alex.cryptoBackend.mapper;
 
 import com.alex.cryptoBackend.dto.*;
-import com.alex.cryptoBackend.model.Currency;
-import com.alex.cryptoBackend.model.Transaction;
-import com.alex.cryptoBackend.model.User;
-import com.alex.cryptoBackend.model.Wallet;
+import com.alex.cryptoBackend.model.*;
+import com.alex.cryptoBackend.security.service.UserDetailsImpl;
 import org.mapstruct.Mapper;
-
 
 import java.util.List;
 
-
 @Mapper(componentModel = "spring")
 public interface MapMapper {
+    UserDetailsImpl toUserDetails(User user);
+    RoleDto toDto(Role role);
+    Role toRole(RoleDto roleDto);
     User toUser(UserDto userDto);
     User toUser(NewUserDto newUser);
     Currency toCurrency(CurrencyDto currencyDto);
@@ -24,4 +23,6 @@ public interface MapMapper {
     UserDto toDto(User user);
     List<UserDto> toDto(List<User> users);
     TransactionDto toDto(Transaction transaction);
+    Transaction toTransaction(TransactionDto transactionDto);
+    List<TransactionDto> toTransactionDtoList(List<Transaction> transactions);
 }

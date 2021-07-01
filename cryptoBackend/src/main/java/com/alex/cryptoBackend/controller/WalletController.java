@@ -6,6 +6,7 @@ import com.alex.cryptoBackend.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class WalletController {
         List<WalletDto> wallets = walletService.getWalletsByUser(user);
         return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<WalletDto> getWalletById(@PathVariable Long id) {
         WalletDto wallet = walletService.getWalletById(id);
