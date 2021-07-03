@@ -3,7 +3,6 @@ package com.alex.cryptoBackend.service.impl;
 import com.alex.cryptoBackend.dto.UserDto;
 import com.alex.cryptoBackend.dto.WalletDto;
 import com.alex.cryptoBackend.mapper.MapMapper;
-import com.alex.cryptoBackend.model.User;
 import com.alex.cryptoBackend.model.Wallet;
 import com.alex.cryptoBackend.repository.WalletRepository;
 import com.alex.cryptoBackend.service.WalletService;

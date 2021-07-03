@@ -3,8 +3,6 @@ package com.alex.cryptoBackend.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Entity
@@ -14,10 +12,10 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @Column(nullable = false)
     private User user;
     @OneToOne
-    @NotNull
+    @Column(nullable = false)
     private Currency currency;
-    @Positive
     private BigDecimal amount;
 }
