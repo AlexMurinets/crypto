@@ -6,9 +6,9 @@ import com.alex.cryptoBackend.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +35,7 @@ public class WalletController {
     }
 
     @PostMapping()
-    public ResponseEntity<WalletDto> createWallet(@RequestBody WalletDto wallet) {
+    public ResponseEntity<WalletDto> createWallet(@Valid @RequestBody WalletDto wallet) {
         WalletDto newWallet = walletService.createWallet(wallet);
         return new ResponseEntity<>(newWallet, HttpStatus.CREATED);
     }

@@ -16,14 +16,13 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @NotNull
+    @Column(nullable = false)
     private Wallet sender;
     @ManyToOne
-    @NotNull
+    @Column(nullable = false)
     private Wallet receiver;
-    @NotNull
+    @Column(nullable = false)
     private LocalDateTime time;
-    @NotNull
-    @Positive
+    @Column(nullable = false)
     private BigDecimal amount;
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class CurrencyController {
     }
 
     @PostMapping
-    public ResponseEntity<CurrencyDto> createCurrency(@RequestBody CurrencyDto currencyDto) {
+    public ResponseEntity<CurrencyDto> createCurrency(@Valid @RequestBody CurrencyDto currencyDto) {
         CurrencyDto newCurrency = currencyService.createCurrency(currencyDto);
         return new ResponseEntity<>(newCurrency, HttpStatus.OK);
     }

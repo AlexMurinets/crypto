@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody NewUserDto newUser) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody NewUserDto newUser) {
         UserDto user = userService.createUser(newUser);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }

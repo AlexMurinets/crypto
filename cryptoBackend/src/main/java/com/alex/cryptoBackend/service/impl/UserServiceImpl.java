@@ -1,16 +1,21 @@
 package com.alex.cryptoBackend.service.impl;
 
 import com.alex.cryptoBackend.dto.NewUserDto;
+import com.alex.cryptoBackend.dto.RoleDto;
 import com.alex.cryptoBackend.dto.UserDto;
 import com.alex.cryptoBackend.mapper.MapMapper;
+import com.alex.cryptoBackend.model.Role;
 import com.alex.cryptoBackend.model.User;
 import com.alex.cryptoBackend.model.UserState;
+import com.alex.cryptoBackend.repository.RoleRepository;
 import com.alex.cryptoBackend.repository.UserRepository;
 import com.alex.cryptoBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -18,7 +23,9 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final MapMapper mapper;
+    private  final PasswordEncoder encoder;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -43,6 +50,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(NewUserDto newUser) {
         User user = mapper.toUser(newUser);
+        Set<Role> roles = new HashSet<>();
+        for (RoleDto role : newUser.getRoles()) {
+            Role role1 = roleRepository.findByName(role.getName()).orElseThrow(() -> new IllegalArgumentException("Role doesn't exist"));
+            roles.add(role1);
+        }
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setRoles(roles);
         userRepository.save(user);
         return mapper.toDto(user);
     }
