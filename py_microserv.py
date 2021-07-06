@@ -30,11 +30,6 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0"
 }
 
-dct = {
-    'BTC': "pid-1057391-last",
-    'ETH': "pid-1061443-last"
-}
-
 q_get_abbr = "SELECT abbreviation FROM currency"
 c.execute(q_get_abbr)
 abbrs = c.fetchall()
@@ -44,11 +39,13 @@ while True:
     src = req.text
     soup = BeautifulSoup(src, "lxml")
     for item in abbrs:
-        if item[0] in dct.keys():
-            val = soup.find(class_=re.compile(dct[item[0]])).text
-            val = normalize_float(val)
-            c.execute("UPDATE currency SET value = %s WHERE abbreviation = %s;", (float(val.strip().strip("'")), item[0]))
-            conn.commit()
+        val = soup.find(attrs={"class": "left noWrap elp symb js-currency-symbol", "title": item[0]})
+        if val is None:
+            continue
+        val = val.parent.find(class_="price js-currency-price").text
+        val = normalize_float(val)
+        c.execute("UPDATE currency SET value = %s WHERE abbreviation = %s;", (float(val.strip().strip("'")), item[0]))
+        conn.commit()
     time.sleep(10)
 
 c.close()
