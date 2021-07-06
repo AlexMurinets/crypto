@@ -23,7 +23,7 @@ DB_USER = "root"
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST, port=5431)
 c = conn.cursor()
 
-url = "https://ru.investing.com/crypto/"
+url = "https://ru.investing.com/crypto/currencies"
 
 headers = {
     "Accept": "*/*",
