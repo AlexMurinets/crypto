@@ -7,6 +7,7 @@ import psycopg2
 
 def normalize_float(s):
     res = s
+    a = 3
     indx = res.find('.')
     while indx != -1:
         res = res[:indx] + res[indx+1:]
