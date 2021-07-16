@@ -20,6 +20,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final MapMapper mapper;
 
+    private final static String USER_EXCEPTION_MESSAGE = "User doesn't exist";
+
     @Override
     public List<UserDto> getAllUsers() {
         List<UserDto> users = mapper.toDto(
@@ -32,12 +34,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long id) {
-        return mapper.toDto(userRepository.findById(id).filter(user -> user.getState() == UserState.ACTIVE).orElseThrow(IllegalArgumentException::new));
+        return mapper.toDto(userRepository.findById(id).filter(user -> user.getState() == UserState.ACTIVE).orElseThrow(() -> new IllegalArgumentException(USER_EXCEPTION_MESSAGE)));
     }
 
     @Override
     public void deleteUserById(Long id) {
-        userRepository.findById(id).orElseThrow(IllegalArgumentException::new).setState(UserState.DELETED);
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(USER_EXCEPTION_MESSAGE));
+        user.setState(UserState.DELETED);
+        userRepository.save(user);
     }
 
     @Override
@@ -49,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto user, Long id) {
-        userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(USER_EXCEPTION_MESSAGE));
         user.setId(id);
         User updatedUser = mapper.toUser(user);
         userRepository.save(updatedUser);
