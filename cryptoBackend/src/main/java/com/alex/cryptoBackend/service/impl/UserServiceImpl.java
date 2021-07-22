@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private  final PasswordEncoder encoder;
 
     private final static String USER_EXCEPTION_MESSAGE = "User doesn't exist";
+    private final static String ROLE_EXCEPTION_MESSAGE = "Role doesn't exist";
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
         User user = mapper.toUser(newUser);
         Set<Role> roles = new HashSet<>();
         for (RoleDto role : newUser.getRoles()) {
-            Role role1 = roleRepository.findByName(role.getName()).orElseThrow(() -> new IllegalArgumentException("Role doesn't exist"));
+            Role role1 = roleRepository.findByName(role.getName()).orElseThrow(() -> new IllegalArgumentException(ROLE_EXCEPTION_MESSAGE));
             roles.add(role1);
         }
         user.setPassword(encoder.encode(user.getPassword()));

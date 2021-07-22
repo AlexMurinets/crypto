@@ -12,10 +12,10 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private User user;
     @OneToOne
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private Currency currency;
     private BigDecimal amount;
 }

@@ -21,6 +21,9 @@
 		<assertj.version>3.15.0</assertj.version>
 		<junit.jupiter.api.version>5.8.0-M1</junit.jupiter.api.version>
 		<mockito.version>3.4.2</mockito.version>
+		<flyway-db.user>root</flyway-db.user>
+		<flyway-db.password>root</flyway-db.password>
+		<flyway-db.url>jdbc:postgresql://localhost:5431/crypto</flyway-db.url>
 	</properties>
 
 	<dependencies>
@@ -153,6 +156,16 @@
 						<arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
 						<arg>-Amapstruct.defaultComponentModel=spring</arg>
 					</compilerArgs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>7.7.1</version>
+				<configuration>
+					<url>${flyway-db.url}</url>
+					<user>${flyway-db.user}</user>
+					<password>${flyway-db.password}</password>
 				</configuration>
 			</plugin>
 		</plugins>
