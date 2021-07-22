@@ -26,13 +26,13 @@ public class DaoTest {
         User user = new User();
         user.setFirstName("Alexei");
         user.setLastName("Murinets");
-        user.setUsername("leha777");
-        user.setEmail("Alexei7a@gmail.com");
+        user.setUsername("leha7777");
+        user.setEmail("Alexeika7a@gmail.com");
         user.setPassword("popins777");
         user.setState(UserState.ACTIVE);
         user.setStatus(UserStatus.BASIC);
         userRepository.save(user);
-        User user1 = userRepository.findByUsername("leha777").orElseThrow(() -> new IllegalArgumentException("No such user"));
-        assertThat(user1.getEmail()).isEqualTo("Alexei7a@gmail.com");
+        User user1 = userRepository.findByUsername("leha7777").orElseThrow(() -> new IllegalArgumentException("No such user"));
+        assertThat(user1.getEmail()).isEqualTo("Alexeika7a@gmail.com");
     }
 }
