@@ -8,7 +8,9 @@ import com.alex.cryptoBackend.model.Role;
 import com.alex.cryptoBackend.model.User;
 import com.alex.cryptoBackend.model.UserState;
 import com.alex.cryptoBackend.repository.RoleRepository;
+import com.alex.cryptoBackend.repository.TransactionRepository;
 import com.alex.cryptoBackend.repository.UserRepository;
+import com.alex.cryptoBackend.repository.WalletRepository;
 import com.alex.cryptoBackend.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +35,10 @@ public class UserServiceTest {
     @MockBean
     private RoleRepository roleRepository;
     @MockBean
+    private TransactionRepository transactionRepository;
+    @MockBean
+    private  WalletRepository walletRepository;
+    @MockBean
     private MapMapper mapper;
     @MockBean
     private  PasswordEncoder encoder;
@@ -51,7 +57,7 @@ public class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        userService = new UserServiceImpl(userRepository, roleRepository, mapper, encoder);
+        userService = new UserServiceImpl(userRepository, roleRepository, transactionRepository, walletRepository, mapper, encoder);
         userDto1.setEmail("Jonny@gmail.com");
         userDto1.setId(1L);
         userDto1.setUsername("Username");

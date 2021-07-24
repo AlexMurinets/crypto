@@ -11,15 +11,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Table(name = "transactions")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-//    @Column(nullable = false)
     private Wallet sender;
     @ManyToOne
-//    @Column(nullable = false)
     private Wallet receiver;
     @Column(nullable = false)
     private LocalDateTime time;

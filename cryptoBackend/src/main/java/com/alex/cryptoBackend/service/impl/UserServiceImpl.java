@@ -1,14 +1,14 @@
 package com.alex.cryptoBackend.service.impl;
 
-import com.alex.cryptoBackend.dto.NewUserDto;
-import com.alex.cryptoBackend.dto.RoleDto;
-import com.alex.cryptoBackend.dto.UserDto;
+import com.alex.cryptoBackend.dto.*;
 import com.alex.cryptoBackend.mapper.MapMapper;
 import com.alex.cryptoBackend.model.Role;
 import com.alex.cryptoBackend.model.User;
 import com.alex.cryptoBackend.model.UserState;
 import com.alex.cryptoBackend.repository.RoleRepository;
+import com.alex.cryptoBackend.repository.TransactionRepository;
 import com.alex.cryptoBackend.repository.UserRepository;
+import com.alex.cryptoBackend.repository.WalletRepository;
 import com.alex.cryptoBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final TransactionRepository transactionRepository;
+    private final WalletRepository walletRepository;
     private final MapMapper mapper;
     private  final PasswordEncoder encoder;
 
@@ -42,7 +44,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long id) {
-        return mapper.toDto(userRepository.findById(id).filter(user -> user.getState() == UserState.ACTIVE).orElseThrow(() -> new IllegalArgumentException(USER_EXCEPTION_MESSAGE)));
+        User user = userRepository.findById(id).filter(thisUser -> thisUser.getState() == UserState.ACTIVE).orElseThrow(() -> new IllegalArgumentException(USER_EXCEPTION_MESSAGE));
+        return mapper.toDto(user);
     }
 
     @Override

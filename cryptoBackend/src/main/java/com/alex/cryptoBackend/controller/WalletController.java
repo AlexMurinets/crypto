@@ -1,6 +1,5 @@
 package com.alex.cryptoBackend.controller;
 
-import com.alex.cryptoBackend.dto.UserDto;
 import com.alex.cryptoBackend.dto.WalletDto;
 import com.alex.cryptoBackend.service.WalletService;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +21,9 @@ public class WalletController {
         List<WalletDto> wallets = walletService.getAllWallets();
         return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
-    @GetMapping("/user")
-    public ResponseEntity<List<WalletDto>> getWalletsByUser(@RequestBody UserDto user) {
-        List<WalletDto> wallets = walletService.getWalletsByUser(user);
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<WalletDto>> getWalletsByUser(@PathVariable Long id) {
+        List<WalletDto> wallets = walletService.getWalletsByUser(id);
         return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
 

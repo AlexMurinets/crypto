@@ -72,13 +72,4 @@ public class UserControllerTest {
                 .andExpect(jsonPath("username").value("leha777"));
     }
 
-    @Test
-    @WithMockUser
-    void testHello() throws Exception {
-        mvc.perform(get("/users/hello")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Hello")));
-    }
-
 }
