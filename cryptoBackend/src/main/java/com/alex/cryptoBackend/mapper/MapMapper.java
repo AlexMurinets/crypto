@@ -2,10 +2,10 @@ package com.alex.cryptoBackend.mapper;
 
 import com.alex.cryptoBackend.dto.*;
 import com.alex.cryptoBackend.model.*;
+import com.alex.cryptoBackend.repository.TransactionRepository;
 import com.alex.cryptoBackend.repository.UserRepository;
+import com.alex.cryptoBackend.repository.WalletRepository;
 import com.alex.cryptoBackend.security.service.UserDetailsImpl;
-import com.alex.cryptoBackend.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,10 @@ public abstract class MapMapper {
 
     @Autowired
     protected UserRepository userRepository;
+    @Autowired
+    protected TransactionRepository transactionRepository;
+    @Autowired
+    protected WalletRepository walletRepository;
 
     public abstract UserDetailsImpl toUserDetails(User user);
     public abstract RoleDto toDto(Role role);
@@ -35,7 +39,16 @@ public abstract class MapMapper {
     public abstract Set<WalletDto> walletDtoSet(Set<Wallet> wallets);
     public abstract UserDto toDto(User user);
     public abstract List<UserDto> toDto(List<User> users);
+
+    @Mapping(target = "userSenderId", expression = "java(transaction.getSender().getUser().getId())")
+    @Mapping(target = "userReceiverId", expression = "java(transaction.getReceiver().getUser().getId())")
+    @Mapping(target = "walletSenderId", expression = "java(transaction.getSender().getId())")
+    @Mapping(target = "walletReceiverId", expression = "java(transaction.getReceiver().getId())")
+    @Mapping(target = "currency", expression = "java(transaction.getSender().getCurrency().getName())")
     public abstract TransactionDto toDto(Transaction transaction);
+
+    @Mapping(target = "sender", expression = "java(walletRepository.findById(transactionDto.getWalletSenderId()).orElseThrow())")
+    @Mapping(target = "receiver", expression = "java(walletRepository.findById(transactionDto.getWalletReceiverId()).orElseThrow())")
     public abstract Transaction toTransaction(TransactionDto transactionDto);
     public abstract List<TransactionDto> toTransactionDtoList(List<Transaction> transactions);
 }
