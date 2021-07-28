@@ -1,9 +1,9 @@
 package com.alex.cryptoBackend.service;
 
-import com.alex.cryptoBackend.dto.NewUserDto;
-import com.alex.cryptoBackend.dto.UserDto;
+import com.alex.cryptoBackend.dto.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     List<UserDto> getAllUsers();

@@ -15,5 +15,8 @@ public interface TransactionService {
     List<TransactionDto> getTransactionsByWalletNegativePeriod(Long walletId, LocalDate start, LocalDate end);
     List<TransactionDto> getAllTransactionsByPeriod(LocalDate start, LocalDate end);
     List<TransactionDto> getAllWalletsTransactions(Long walletId);
-    TransactionDto executeTransaction(Long senderId, Long receiverId, BigDecimal amount);
+    List<TransactionDto> getAllWalletsTransactionsByUserAndCurrency(Long userId, String abbreviation);
+    TransactionDto executeTransactionWithWallets(Long senderId, Long receiverId, BigDecimal amount);
+    TransactionDto executeTransactionUsers(Long walletSenderId, Long userReceiverId, BigDecimal amount);
+    TransactionDto executeTransactionUsersCurrency(Long userSenderId, String currencyAbbreviation, Long userReceiverId, BigDecimal amount);
 }

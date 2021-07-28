@@ -3,13 +3,15 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 public class TransactionDto {
     private Long id;
-    private WalletDto sender;
-    private WalletDto receiver;
+    private Long userSenderId;
+    private Long userReceiverId;
+    private String currency;
+    private Long walletSenderId;
+    private Long walletReceiverId;
     private BigDecimal amount;
     private LocalDateTime time;
 }

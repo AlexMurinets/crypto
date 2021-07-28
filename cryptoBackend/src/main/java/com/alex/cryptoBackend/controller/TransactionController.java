@@ -58,7 +58,7 @@ public class TransactionController {
 
     @PostMapping("/{senderId}/to/{receiverId}")
     public ResponseEntity<TransactionDto> executeTransaction(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId, @RequestParam BigDecimal amount) {
-        TransactionDto transactions = transactionService.executeTransaction(senderId, receiverId, amount);
+        TransactionDto transactions = transactionService.executeTransactionWithWallets(senderId, receiverId, amount);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 

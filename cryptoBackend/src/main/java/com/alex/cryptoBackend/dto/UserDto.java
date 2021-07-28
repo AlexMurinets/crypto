@@ -17,4 +17,5 @@ public class UserDto {
     private UserStatus status;
     private UserState state;
     private Set<RoleDto> roles = new HashSet<>();
+    private Set<WalletDto> wallets = new HashSet<>();
 }

@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class WalletDto {
     private Long id;
     @NotNull(message = "Wallet can't be null")
-    private UserDto user;
+    private Long userId;
     @NotNull(message = "Currency need to be selected")
     private CurrencyDto currency;
     private BigDecimal amount;
