@@ -73,7 +73,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<TransactionDto> getAllTransactionsByPeriod(LocalDate start, LocalDate end) {
         final Predicate<Transaction> predicate = transaction -> transaction.getTime().isAfter(ChronoLocalDateTime.from(start)) && transaction.getTime().isBefore(ChronoLocalDateTime.from(end));
-        List<TransactionDto> transactions= mapper.toTransactionDtoList(transactionRepository.findAll().stream()
+        List<TransactionDto> transactions = mapper.toTransactionDtoList(transactionRepository.findAll().stream()
                 .filter(predicate)
                 .collect(Collectors.toList()));
         return transactions;
@@ -95,6 +95,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     private List<TransactionDto> getTransactionDtos(Wallet wallet) {
         List<TransactionDto> transactionsSend = mapper.toTransactionDtoList(transactionRepository.findBySender(wallet));
+        transactionsSend = transactionsSend.stream()
+                .map(this::setNegativeTransaction)
+                .collect(Collectors.toList());
         List<TransactionDto> transactionsReceive = mapper.toTransactionDtoList(transactionRepository.findByReceiver(wallet));
         List<TransactionDto> transactionsAll = Stream.concat(transactionsReceive.stream(), transactionsSend.stream())
                 .sorted(Comparator.comparing(TransactionDto::getTime))
@@ -102,32 +105,51 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionsAll;
     }
 
+    private TransactionDto setNegativeTransaction(TransactionDto transactionDto) {
+        transactionDto.setAmount(transactionDto.getAmount().multiply(BigDecimal.valueOf(-1)));
+        return transactionDto;
+    }
+
     @Override
     @Transactional
     public TransactionDto executeTransactionWithWallets(Long senderId, Long receiverId, BigDecimal amount) {
         Wallet sender = walletRepository.findById(senderId).orElseThrow(() -> new IllegalArgumentException("Wallet doesn't exist"));
         Wallet receiver = walletRepository.findById(receiverId).orElseThrow(() -> new IllegalArgumentException("Wallet doesn't exist"));
-        if (sender.getAmount().compareTo(amount) >= 0) {
-            sender.setAmount(sender.getAmount().subtract(amount));
-            receiver.setAmount(receiver.getAmount().add(amount));
-        }
-        else {
+        return getTransactionDto(amount, sender, receiver);
+    }
+
+    @Override
+    @Transactional
+    public TransactionDto executeTransactionUsers(Long walletSenderId, Long userReceiverId, BigDecimal amount) {
+        Wallet senderWallet = walletRepository.findById(walletSenderId).orElseThrow(() -> new IllegalArgumentException("No such a wallet"));
+        User receiverUser = userRepository.findById(userReceiverId).orElseThrow();
+        Wallet receiverWallet = walletRepository.findByUserAndCurrency(receiverUser, senderWallet.getCurrency()).orElseThrow(() -> new IllegalArgumentException("No such a wallet for this user"));
+        return getTransactionDto(amount, senderWallet, receiverWallet);
+    }
+
+    @Override
+    public TransactionDto executeTransactionUsersCurrency(Long userSenderId, String currencyAbbreviation, Long userReceiverId, BigDecimal amount) {
+        Wallet sender = walletRepository.findWalletByUserIdAndCurrencyAbbreviation(userSenderId, currencyAbbreviation).orElseThrow(() -> new IllegalArgumentException("Invalid operation"));
+        Wallet receiver = walletRepository.findWalletByUserIdAndCurrencyAbbreviation(userReceiverId, currencyAbbreviation).orElseThrow(() -> new IllegalArgumentException("No such a wallet"));
+        return getTransactionDto(amount, sender, receiver);
+    }
+
+    private TransactionDto getTransactionDto(BigDecimal amount, Wallet senderWallet, Wallet receiverWallet) {
+        if (senderWallet.getAmount().compareTo(amount) >= 0) {
+            senderWallet.setAmount(senderWallet.getAmount().subtract(amount));
+            receiverWallet.setAmount(receiverWallet.getAmount().add(amount));
+        } else {
             log.error("Not enough money");
             throw new IllegalArgumentException("Not enough money");
         }
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
-        transaction.setSender(sender);
-        walletRepository.save(sender);
-        transaction.setReceiver(receiver);
-        walletRepository.save(receiver);
+        transaction.setSender(senderWallet);
+        walletRepository.save(senderWallet);
+        transaction.setReceiver(receiverWallet);
+        walletRepository.save(receiverWallet);
         transaction.setTime(LocalDateTime.now());
         transactionRepository.save(transaction);
         return mapper.toDto(transaction);
-    }
-
-    @Override
-    public TransactionDto executeTransactionUsers(Long senderId, Long receiverId, BigDecimal amount) {
-        return null;
     }
 }

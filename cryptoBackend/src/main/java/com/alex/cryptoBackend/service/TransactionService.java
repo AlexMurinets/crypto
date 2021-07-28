@@ -17,5 +17,6 @@ public interface TransactionService {
     List<TransactionDto> getAllWalletsTransactions(Long walletId);
     List<TransactionDto> getAllWalletsTransactionsByUserAndCurrency(Long userId, String abbreviation);
     TransactionDto executeTransactionWithWallets(Long senderId, Long receiverId, BigDecimal amount);
-    TransactionDto executeTransactionUsers(Long senderId, Long receiverId, BigDecimal amount);
+    TransactionDto executeTransactionUsers(Long walletSenderId, Long userReceiverId, BigDecimal amount);
+    TransactionDto executeTransactionUsersCurrency(Long userSenderId, String currencyAbbreviation, Long userReceiverId, BigDecimal amount);
 }

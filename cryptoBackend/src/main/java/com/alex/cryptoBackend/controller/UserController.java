@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -60,6 +61,12 @@ public class UserController {
     public ResponseEntity<WalletDto> getUsersWalletById(@PathVariable String walletAbbreviation, @PathVariable Long userId) {
         WalletDto wallet = walletService.getByUserAndCurrency(userId, walletAbbreviation);
         return new ResponseEntity<>(wallet, HttpStatus.OK);
+    }
+
+    @PostMapping("/{userId}/wallets/{walletAbbreviation}/to/{receiverId}")
+    public ResponseEntity<TransactionDto> getUsersWalletById(@RequestParam BigDecimal amount, @PathVariable String walletAbbreviation, @PathVariable Long userId, @PathVariable Long receiverId) {
+        TransactionDto transaction = transactionService.executeTransactionUsersCurrency(userId, walletAbbreviation, receiverId, amount);
+        return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}/wallets/{walletAbbreviation}/transactions")
