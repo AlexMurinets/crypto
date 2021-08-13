@@ -16,11 +16,13 @@ import java.util.List;
 public class WalletController {
 
     private final WalletService walletService;
+
     @GetMapping
     public ResponseEntity<List<WalletDto>> getWallets() {
         List<WalletDto> wallets = walletService.getAllWallets();
         return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
+
     @GetMapping("/user/{id}")
     public ResponseEntity<List<WalletDto>> getWalletsByUser(@PathVariable Long id) {
         List<WalletDto> wallets = walletService.getWalletsByUser(id);
@@ -38,11 +40,13 @@ public class WalletController {
         WalletDto newWallet = walletService.createWallet(wallet);
         return new ResponseEntity<>(newWallet, HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<WalletDto> updateWallet(@RequestBody WalletDto wallet, @PathVariable Long id) {
         WalletDto updatedWallet = walletService.updateWallet(wallet, id);
         return new ResponseEntity<>(updatedWallet, HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWallet(@PathVariable Long id) {
         walletService.delete(id);

@@ -5,6 +5,7 @@ import Currencies from '../../../crypto-frontend/src/views/Currencies.vue'
 import Contact from '../../../crypto-frontend/src/views/Contact.vue'
 import LoginPage from '../../../crypto-frontend/src/views/LoginPage.vue'
 import Register from '../../../crypto-frontend/src/views/Register.vue'
+import Profile from '../../../crypto-frontend/src/views/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes: Array<RouteConfig> = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   },
   {
     path: '/about',
